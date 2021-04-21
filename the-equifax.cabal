@@ -60,7 +60,7 @@ library
     , unordered-containers
     , vector >=0.10.9 && <0.13
   other-modules:
-      Paths_consumer_credit_report
+      Paths_the_equifax
   exposed-modules:
       TheEquifax
       ConsumerCreditReport
@@ -91,7 +91,7 @@ test-suite tests
       tests
   ghc-options: -Wall -fno-warn-orphans
   build-depends:
-      consumer-credit-report
+      the-equifax
     , QuickCheck
     , aeson
     , base >=4.7 && <5.0

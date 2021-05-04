@@ -492,8 +492,9 @@ instance MimeRender MimeMultipartFormData Date where
   mimeRender _ = mimeRenderDefaultMultipartFormData
 
 -- | @TI.parseTimeM True TI.defaultTimeLocale "%Y-%m-%d"@
-_readDate :: MonadFail m => String -> m Date
-_readDate s = Date <$> TI.parseTimeM True TI.defaultTimeLocale "%Y-%m-%d" s
+_readDate :: (Alternative m, MonadFail m) => String -> m Date
+_readDate s = Date <$> ((TI.parseTimeM True TI.defaultTimeLocale "%m%d%Y" s) <|> (TI.parseTimeM True TI.defaultTimeLocale "%m00%Y" s))
+
 {-# INLINE _readDate #-}
 
 -- | @TI.formatTime TI.defaultTimeLocale "%Y-%m-%d"@

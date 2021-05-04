@@ -1591,6 +1591,7 @@ data ConsumerCreditReportEquifaxUSConsumerCreditReport = ConsumerCreditReportEqu
   , consumerCreditReportEquifaxUSConsumerCreditReportDoNotCombineIndicator :: !(Maybe Text) -- ^ "doNotCombineIndicator" - This indicator may appear on the report for various reasons, such as:   - The system encountered a condition where a father/son, brother/brother, or non‐related consumer/consumer files have been mixed by applying a consumer&#39;s data to the wrong file.    - When a fraud indicator (Q, R, T or V) is placed on the file, the Do Not Combine indicator is placed on the file to avoid the file from combining with a file that may have been created as a result of fraud. 
   , consumerCreditReportEquifaxUSConsumerCreditReportAddressDiscrepancyIndicator :: !(Maybe Text) -- ^ "addressDiscrepancyIndicator" - Indicates if a substantial difference was found between address(es) submitted in the inquiry and the address(es) already existing on a credit file.  The Address Discrepancy Indicator codes that can be returned in the Header element are:   - Y: a substantial difference occurred    - N: no substantial difference occurred 
   , consumerCreditReportEquifaxUSConsumerCreditReportFraudSocialNumAlertCode :: !(Maybe ConsumerCreditReportFraudSocialNumAlertCode) -- ^ "fraudSocialNumAlertCode"
+  , consumerCreditReportEquifaxUSConsumerCreditReportFraudIDScanAlertCode :: !(Maybe [ConsumerCreditReportFraudIDScanAlertCode]) -- ^ "fraudSocialNumAlertCode"
   , consumerCreditReportEquifaxUSConsumerCreditReportFraudVictimIndicator :: !(Maybe ConsumerCreditReportFraudVictimIndicator) -- ^ "fraudVictimIndicator"
   , consumerCreditReportEquifaxUSConsumerCreditReportAddresses :: !(Maybe [Address]) -- ^ "addresses" - It contains Equifax report data pertaining to the subject&#39;s addresses
   , consumerCreditReportEquifaxUSConsumerCreditReportIdentityScan :: !(Maybe ConsumerCreditReportIdentityScan) -- ^ "identityScan"
@@ -1639,6 +1640,7 @@ instance A.FromJSON ConsumerCreditReportEquifaxUSConsumerCreditReport where
       <*> (o .:? "doNotCombineIndicator")
       <*> (o .:? "addressDiscrepancyIndicator")
       <*> (o .:? "fraudSocialNumAlertCode")
+      <*> (o .:? "fraudIDScanAlertCodes")
       <*> (o .:? "fraudVictimIndicator")
       <*> (o .:? "addresses")
       <*> (o .:? "identityScan")
@@ -1686,6 +1688,7 @@ instance A.ToJSON ConsumerCreditReportEquifaxUSConsumerCreditReport where
       , "doNotCombineIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportDoNotCombineIndicator
       , "addressDiscrepancyIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportAddressDiscrepancyIndicator
       , "fraudSocialNumAlertCode" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudSocialNumAlertCode
+      , "fraudIDScanAlertCode" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudIDScanAlertCode
       , "fraudVictimIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudVictimIndicator
       , "addresses" .= consumerCreditReportEquifaxUSConsumerCreditReportAddresses
       , "identityScan" .= consumerCreditReportEquifaxUSConsumerCreditReportIdentityScan
@@ -1736,6 +1739,7 @@ mkConsumerCreditReportEquifaxUSConsumerCreditReport =
   , consumerCreditReportEquifaxUSConsumerCreditReportDoNotCombineIndicator = Nothing
   , consumerCreditReportEquifaxUSConsumerCreditReportAddressDiscrepancyIndicator = Nothing
   , consumerCreditReportEquifaxUSConsumerCreditReportFraudSocialNumAlertCode = Nothing
+  , consumerCreditReportEquifaxUSConsumerCreditReportFraudIDScanAlertCode = Nothing
   , consumerCreditReportEquifaxUSConsumerCreditReportFraudVictimIndicator = Nothing
   , consumerCreditReportEquifaxUSConsumerCreditReportAddresses = Nothing
   , consumerCreditReportEquifaxUSConsumerCreditReportIdentityScan = Nothing
@@ -1854,6 +1858,28 @@ instance A.ToJSON ConsumerCreditReportFraudSocialNumAlertCode where
    _omitNulls
       [ "code" .= consumerCreditReportFraudSocialNumAlertCodeCode
       , "description" .= consumerCreditReportFraudSocialNumAlertCodeDescription
+      ]
+
+data ConsumerCreditReportFraudIDScanAlertCode = ConsumerCreditReportFraudIDScanAlertCode
+  { -- | "code" - Code value
+    consumerCreditReportFraudIDScanAlertCodeCode :: !(Maybe Text),
+    -- | "description" - FLAG FLAG VERBIAGE DESCRIPTION - A: Inquiry SSN is associated with another consumer - SSN Mismatch   The social security number provided in the inquiry matches   to another consumer on the Equifax database. A credit file   is returned for the consumer name and address provided,   however the social security number on that file is different   from the social security number provided on the inquiry.    - B: Inquiry SSN not present    Inquiry did not contain a social security number,    therefore no comparison can be made.      - N: No Alert available   The social security number provided in the inquiry    cannot be matched to a specific consumer based   on the Equifax proprietary comparison algorithm.    - P: Inquiry SSN is associated with the consumer   The social security number provided in the inquiry   matches to the requested consumer.    - V*: SSN affirm variation    Inquiry ssn has a slight variation with consumer.    The social security number provided in the inquiry   has a slight variation to the requested consumer.    - W: Inquiry SSN is associated with another consumer   The social security number provided in the inquiry   matches to another consumer in the Equifax database.    No credit file is available for the requested consumer.    - *: Optional code – requires that your Equifax Customer Number be activated to   be returned when encountered.
+    consumerCreditReportFraudIDScanAlertCodeDescription :: !(Maybe Text)
+  }
+  deriving (P.Show, P.Eq, P.Typeable)
+
+instance A.FromJSON ConsumerCreditReportFraudIDScanAlertCode where
+  parseJSON = A.withObject "ConsumerCreditReportFraudIDScanAlertCode" $ \o ->
+    ConsumerCreditReportFraudIDScanAlertCode
+      <$> (o .:? "code")
+      <*> (o .:? "description")
+
+-- | ToJSON ConsumerCreditReportFraudIDScanAlertCodes
+instance A.ToJSON ConsumerCreditReportFraudIDScanAlertCode where
+  toJSON ConsumerCreditReportFraudIDScanAlertCode {..} =
+    _omitNulls
+      [ "code" .= consumerCreditReportFraudIDScanAlertCodeCode,
+        "description" .= consumerCreditReportFraudIDScanAlertCodeDescription
       ]
 
 

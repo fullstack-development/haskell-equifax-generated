@@ -1,7 +1,7 @@
 {-
    Consumer Credit Report
 
-   # Introduction       Equifax’s Consumer Credit Report is the leading consumer credit resource enabling lenders to make faster, more informed credit-granting decisions, better manage their risk and maximize growth opportunities. The Consumer Credit Report unites the power of superior consumer dfata with best-in-class search and match logic capabilities to deliver higher match rates on more inquiries.    # Getting Started  1. **<a href=\"/user/applications\" target=\"_blank\">Create</a>** an application  2. **<a href=\"/user/applications\" target=\"_blank\">Subscribe</a>** to Consumer Credit Report API  3. **<a href=\"/products/consumer-credit-report\" target=\"_blank\">Explore</a>** the Sandbox environment mode # Promoting to UAT  To successfully submit test transactions through your application in the UAT environment, a test member number is required.  You may use your existing Equifax test member number(s).  Please contact your Equifax Account Representative if a new test member number is needed. The steps below can be used to test in the UAT environment.  Transactions generated using a test member number do not return identical results as a sandbox transaction.  A sandbox transaction will reflect everything that is exposed in the API whereas a test member number is configured to align with the specifications of your contract. Please contact us to ensure your test member number is configured to your expectations.      1. **<a href=\"/user/applications\" target=\"_blank\">Promote</a>** application to test  2. **<a href=\"/documentation\" target=\"_blank\">Update</a>** requests details for UAT  3. **<a href=\"/documentation\" target=\"_blank\">Test</a>** scenarios in UAT environment   # For More Details    * **<a href=\"/contact\" target=\"_blank\">Contact Us</a>** - Equifax Developer Center Support Website   * **ACRO Migration Support**       * phone: 1-888-407-0359; Option 2 followed by Option 5         * email:  BT.Acro.tech@equifax.com        
+   # Introduction       Equifax’s Consumer Credit Report is the leading consumer credit resource enabling lenders to make faster, more informed credit-granting decisions, better manage their risk and maximize growth opportunities. The Consumer Credit Report unites the power of superior consumer dfata with best-in-class search and match logic capabilities to deliver higher match rates on more inquiries.    # Getting Started  1. **<a href=\"/user/applications\" target=\"_blank\">Create</a>** an application  2. **<a href=\"/user/applications\" target=\"_blank\">Subscribe</a>** to Consumer Credit Report API  3. **<a href=\"/products/consumer-credit-report\" target=\"_blank\">Explore</a>** the Sandbox environment mode # Promoting to UAT  To successfully submit test transactions through your application in the UAT environment, a test member number is required.  You may use your existing Equifax test member number(s).  Please contact your Equifax Account Representative if a new test member number is needed. The steps below can be used to test in the UAT environment.  Transactions generated using a test member number do not return identical results as a sandbox transaction.  A sandbox transaction will reflect everything that is exposed in the API whereas a test member number is configured to align with the specifications of your contract. Please contact us to ensure your test member number is configured to your expectations.      1. **<a href=\"/user/applications\" target=\"_blank\">Promote</a>** application to test  2. **<a href=\"/documentation\" target=\"_blank\">Update</a>** requests details for UAT  3. **<a href=\"/documentation\" target=\"_blank\">Test</a>** scenarios in UAT environment   # For More Details    * **<a href=\"/contact\" target=\"_blank\">Contact Us</a>** - Equifax Developer Center Support Website   * **ACRO Migration Support**       * phone: 1-888-407-0359; Option 2 followed by Option 5         * email:  BT.Acro.tech@equifax.com
 
    OpenAPI Version: 3.0.0
    Consumer Credit Report API version: 1.0.0
@@ -70,7 +70,7 @@ import Prelude (($), (.), (<$>), (<*>), Maybe(..), Bool(..), Char, String, fmap,
 
 -- * ConsumerCreditReportConfig
 
--- | 
+-- |
 data ConsumerCreditReportConfig = ConsumerCreditReportConfig
   { configHost  :: BCL.ByteString -- ^ host supplied in the Request
   , configUserAgent :: Text -- ^ user-agent supplied in the Request
@@ -108,7 +108,7 @@ newConfig = do
         , configLogContext = logCxt
         , configAuthMethods = []
         , configValidateAuthMethods = True
-        }  
+        }
 
 -- | updates config use AuthMethod on matching requests
 addAuthMethod :: AuthMethod auth => ConsumerCreditReportConfig -> auth -> ConsumerCreditReportConfig
@@ -130,7 +130,7 @@ withStderrLogging p = do
 -- | updates the config to disable logging
 withNoLogging :: ConsumerCreditReportConfig -> ConsumerCreditReportConfig
 withNoLogging p = p { configLogExecWithContext =  runNullLogExec}
- 
+
 -- * ConsumerCreditReportRequest
 
 -- | Represents a request.
@@ -229,7 +229,7 @@ data ParamBody
 
 -- ** ConsumerCreditReportRequest Utils
 
-_mkRequest :: NH.Method -- ^ Method 
+_mkRequest :: NH.Method -- ^ Method
           -> [BCL.ByteString] -- ^ Endpoint
           -> ConsumerCreditReportRequest req contentType res accept -- ^ req: Request Type, res: Response Type
 _mkRequest m u = ConsumerCreditReportRequest m u _mkParams []
@@ -263,13 +263,13 @@ removeHeader req header =
 
 _setContentTypeHeader :: forall req contentType res accept. MimeType contentType => ConsumerCreditReportRequest req contentType res accept -> ConsumerCreditReportRequest req contentType res accept
 _setContentTypeHeader req =
-    case mimeType (P.Proxy :: P.Proxy contentType) of 
+    case mimeType (P.Proxy :: P.Proxy contentType) of
         Just m -> req `setHeader` [("content-type", BC.pack $ P.show m)]
         Nothing -> req `removeHeader` ["content-type"]
 
 _setAcceptHeader :: forall req contentType res accept. MimeType accept => ConsumerCreditReportRequest req contentType res accept -> ConsumerCreditReportRequest req contentType res accept
 _setAcceptHeader req =
-    case mimeType (P.Proxy :: P.Proxy accept) of 
+    case mimeType (P.Proxy :: P.Proxy accept) of
         Just m -> req `setHeader` [("accept", BC.pack $ P.show m)]
         Nothing -> req `removeHeader` ["accept"]
 
@@ -293,25 +293,25 @@ addQuery ::
 addQuery req query = req & L.over (rParamsL . paramsQueryL) (query P.++)
 
 addForm :: ConsumerCreditReportRequest req contentType res accept -> WH.Form -> ConsumerCreditReportRequest req contentType res accept
-addForm req newform = 
+addForm req newform =
     let form = case paramsBody (rParams req) of
             ParamBodyFormUrlEncoded _form -> _form
             _ -> mempty
     in req & L.set (rParamsL . paramsBodyL) (ParamBodyFormUrlEncoded (newform <> form))
 
 _addMultiFormPart :: ConsumerCreditReportRequest req contentType res accept -> NH.Part -> ConsumerCreditReportRequest req contentType res accept
-_addMultiFormPart req newpart = 
+_addMultiFormPart req newpart =
     let parts = case paramsBody (rParams req) of
             ParamBodyMultipartFormData _parts -> _parts
             _ -> []
     in req & L.set (rParamsL . paramsBodyL) (ParamBodyMultipartFormData (newpart : parts))
 
 _setBodyBS :: ConsumerCreditReportRequest req contentType res accept -> B.ByteString -> ConsumerCreditReportRequest req contentType res accept
-_setBodyBS req body = 
+_setBodyBS req body =
     req & L.set (rParamsL . paramsBodyL) (ParamBodyB body)
 
 _setBodyLBS :: ConsumerCreditReportRequest req contentType res accept -> BL.ByteString -> ConsumerCreditReportRequest req contentType res accept
-_setBodyLBS req body = 
+_setBodyLBS req body =
     req & L.set (rParamsL . paramsBodyL) (ParamBodyBL body)
 
 _hasAuthType :: AuthMethod authMethod => ConsumerCreditReportRequest req contentType res accept -> P.Proxy authMethod -> ConsumerCreditReportRequest req contentType res accept
@@ -380,7 +380,7 @@ _toCollA' c encode one xs = case c of
     {-# INLINE go #-}
     {-# INLINE expandList #-}
     {-# INLINE combine #-}
-  
+
 -- * AuthMethods
 
 -- | Provides a method to apply auth methods to requests
@@ -411,7 +411,7 @@ _applyAuthMethods req config@(ConsumerCreditReportConfig {configAuthMethods = as
   foldlM go req as
   where
     go r (AnyAuthMethod a) = applyAuthMethod config a r
-  
+
 -- * Utils
 
 -- | Removes Null fields.  (OpenAPI-Specification 2.0 does not allow Null in JSON)
@@ -500,12 +500,12 @@ _readDate s = Date <$> ((TI.parseTimeM True TI.defaultTimeLocale "%m%d%Y" s) <|>
 -- | @TI.formatTime TI.defaultTimeLocale "%Y-%m-%d"@
 _showDate :: TI.FormatTime t => t -> String
 _showDate =
-  TI.formatTime TI.defaultTimeLocale "%Y-%m-%d"
+  TI.formatTime TI.defaultTimeLocale "%m%d%Y"
 {-# INLINE _showDate #-}
 
 -- * Byte/Binary Formatting
 
-  
+
 -- | base64 encoded characters
 newtype ByteArray = ByteArray { unByteArray :: BL.ByteString }
   deriving (P.Eq,P.Data,P.Ord,P.Typeable,NF.NFData)

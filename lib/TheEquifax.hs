@@ -1,4 +1,6 @@
-module TheEquifax (module Export) where
+module TheEquifax
+  ( module Export,
+  )
+where
 
 import ConsumerCreditReport as Export
-

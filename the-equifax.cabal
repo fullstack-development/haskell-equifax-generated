@@ -63,16 +63,12 @@ library
       Paths_the_equifax
   exposed-modules:
       TheEquifax
-      ConsumerCreditReport
-      ConsumerCreditReport.API
-      ConsumerCreditReport.API.ConsumerCreditReport
-      ConsumerCreditReport.API.PDFFormattedReport
-      ConsumerCreditReport.Client
-      ConsumerCreditReport.Core
-      ConsumerCreditReport.Logging
-      ConsumerCreditReport.MimeTypes
-      ConsumerCreditReport.Model
-      ConsumerCreditReport.ModelLens
+      TheEquifax.ConsumerCreditReport
+      TheEquifax.ConsumerCreditReport.API
+      TheEquifax.ConsumerCreditReport.API.ConsumerCreditReport
+      TheEquifax.ConsumerCreditReport.API.PDFFormattedReport
+      TheEquifax.ConsumerCreditReport.Model
+      TheEquifax.ConsumerCreditReport.ModelLens
       TheEquifax.PrescreenOfOne
       TheEquifax.PrescreenOfOne.API.PrescreenOfOne
       TheEquifax.PrescreenOfOne.Model
@@ -93,12 +89,11 @@ library
 
   if flag(UseKatip)
       build-depends: katip >=0.8 && < 1.0
-      other-modules: ConsumerCreditReport.LoggingKatip
+      other-modules: TheEquifax.Core.LoggingKatip
       cpp-options: -DUSE_KATIP
   else
       build-depends: monad-logger >=0.3 && <0.4
       other-modules:
-        ConsumerCreditReport.LoggingMonadLogger
         TheEquifax.Core.LoggingMonadLogger
       cpp-options: -DUSE_MONAD_LOGGER
 

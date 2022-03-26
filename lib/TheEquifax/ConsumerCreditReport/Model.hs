@@ -23,11 +23,10 @@
 
 -- |
 -- Module : ConsumerCreditReport.Model
-module ConsumerCreditReport.Model where
+module TheEquifax.ConsumerCreditReport.Model where
 
-import ConsumerCreditReport.Core (AuthMethod(..), _omitNulls, setHeader, rAuthTypes, toHeader, rAuthTypesL)
-import TheEquifax.Core (Date)
-import ConsumerCreditReport.MimeTypes
+import TheEquifax.Core 
+import TheEquifax.Core.MimeTypes
 import Control.Applicative (Alternative, (<|>))
 import qualified Control.Arrow as P (left)
 import Data.Aeson ((.:), (.:!), (.:?), (.=))

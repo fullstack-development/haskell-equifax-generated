@@ -223,3 +223,16 @@ instance MimeUnrender MimeOctetStream String where mimeUnrender _ = P.Right . BC
 
 -- | @P.Right . P.const NoContent@
 instance MimeUnrender MimeNoContent NoContent where mimeUnrender _ = P.Right . P.const NoContent
+
+
+-- * Custom Mime Types
+
+-- ** MimePdf
+
+data MimePdf = MimePdf deriving (P.Typeable)
+
+-- | @application/pdf@
+instance MimeType MimePdf where
+  mimeType _ = Just $ P.fromString "application/pdf"
+-- instance MimeRender MimePdf T.Text where mimeRender _ = undefined
+-- instance MimeUnrender MimePdf T.Text where mimeUnrender _ = undefined

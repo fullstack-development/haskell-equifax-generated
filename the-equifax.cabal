@@ -83,6 +83,11 @@ library
       TheEquifax.Core.Client
       TheEquifax.Core.Logging
       TheEquifax.Core.MimeTypes
+      TheEquifax.Models.Address
+      TheEquifax.Models.ConsumerCreditReportEquifaxUSConsumerCreditReport
+      TheEquifax.Models.CreditReportResponse
+      TheEquifax.Models.CreditorClassificationCode
+      TheEquifax.Models.Trade
 
   default-language: Haskell2010
 

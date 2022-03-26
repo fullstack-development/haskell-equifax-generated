@@ -52,6 +52,8 @@ import GHC.Base ((<|>))
 import Prelude ((==),(/=),($), (.),(<$>),(<*>),(>>=),Maybe(..),Bool(..),Char,Double,FilePath,Float,Int,Integer,String,fmap,undefined,mempty,maybe,pure,Monad,Applicative,Functor)
 import qualified Prelude as P
 
+import TheEquifax.Models.CreditReportResponse
+
 -- * Operations
 
 

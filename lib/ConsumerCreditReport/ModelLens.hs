@@ -33,7 +33,13 @@ import Prelude (($), (.),(<$>),(<*>),(=<<),Maybe(..),Bool(..),Char,Double,FilePa
 import qualified Prelude as P
 
 import ConsumerCreditReport.Model
-import ConsumerCreditReport.Core
+import TheEquifax.Models.Address
+import TheEquifax.Models.Trade
+import TheEquifax.Models.CreditReportResponse
+import TheEquifax.Models.ConsumerCreditReportEquifaxUSConsumerCreditReport
+import TheEquifax.Models.CreditorClassificationCode
+import TheEquifax.Core
+
 
 
 -- * APIErrorResponse
@@ -155,9 +161,9 @@ addressRentOwnBuyL f Address{..} = (\addressRentOwnBuy -> Address { addressRentO
 {-# INLINE addressRentOwnBuyL #-}
 
 -- | 'addressSourceOfAddress' Lens
-addressSourceOfAddressL :: Lens_' Address (Maybe AddressSourceOfAddress)
-addressSourceOfAddressL f Address{..} = (\addressSourceOfAddress -> Address { addressSourceOfAddress, ..} ) <$> f addressSourceOfAddress
-{-# INLINE addressSourceOfAddressL #-}
+-- addressSourceOfAddressL :: Lens_' Address (Maybe AddressSourceOfAddress)
+-- addressSourceOfAddressL f Address{..} = (\addressSourceOfAddress -> Address { addressSourceOfAddress, ..} ) <$> f addressSourceOfAddress
+-- {-# INLINE addressSourceOfAddressL #-}
 
 -- | 'addressTelephoneNumber' Lens
 addressTelephoneNumberL :: Lens_' Address (Maybe Text)

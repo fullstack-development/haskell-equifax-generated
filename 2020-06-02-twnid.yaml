@@ -1,0 +1,478 @@
+openapi: 3.0.0
+
+info:
+  title: The Work Number ID API
+  description: |
+    # Introduction
+    The Work Number&reg; ID verifies that the applicant-provided Name and SSN match. By doing so, TWN ID helps mitigate the expense of manual review. Customers use TWN ID during the application process to make prompt, more informed decisions.
+
+    # Getting started
+    1. **<a href="/user/user-apps" target="_blank">Subscribe</a>** to get API credentials.
+    2. **<a href="/oauth" target="_blank">Get an access token</a>** using the credentials.
+    3. **[Identity verification](#tag/Identity-verification)**
+
+  contact:
+    name: "Equifax Developer Center Support"
+    url: "https://developer.equifax.com/contact"
+  version: 'v1'
+  termsOfService: ''
+
+servers:
+  - url: 'https://api.sandbox.equifax.com/business/verifications/twn/v1'
+
+components:
+  securitySchemes:
+    OAuth 2.0:
+      type: http
+      scheme: bearer
+
+  schemas:
+    TargetErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          description: "Code to indicate more specific cause of the error."
+        description:
+          type: string
+        additionalErrorDetails:
+          type: object
+          description: "Additional details about the error."
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          description: "Code to indicate more specific cause of the error."
+        description:
+          type: string
+    Request:
+      properties:
+        applicants:
+          required: true
+          $ref: '#/components/schemas/ApplicantsObject'
+
+    ApplicantsObject:
+      type: object
+      description: 'Container to hold order information along with primary consumer details.'
+      required:
+        - primaryConsumer
+      properties:
+        customerReferenceNumber:
+          type: string
+          description: 'Customer reference number.'
+          example: '1519'
+        orderInfo:
+          $ref: '#/components/schemas/OrderInfo'
+        primaryConsumer:
+          $ref: '#/components/schemas/PrimaryConsumer'
+    OrderInfo:
+      type: object
+      description: 'Container to hold order information such as requestor, inquiry date, inquiry type, source details, etc.'
+      required:
+        - organizationId
+        - organizationName
+        - locationId
+        - locationName
+        - permPurpose
+      properties:
+        organizationId:
+          type: number
+          description: 'Customer Organization ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.'
+          example: 10002119
+        locationId:
+          type: number
+          description: 'Customer Location ID is the department or product line the Customer is configured for in the Equifax system. This will be generated as part of customer onboarding on the Equifax side.'
+          example: 964128
+        organizationName:
+          type: string
+          description: 'Customer Organization Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.'
+          example: ABC Corp
+        platformName:
+          type: string
+          description: 'This will be the name of the Application being used to place the order.This is an optional element'
+          example: string
+        intermediaryName:
+          type: string
+          description: 'This will be the company name/connector name. This is an optional element'
+          example: string
+        resellerName:
+          type: string
+          description: 'Reseller name'
+          example: string  
+        locationName:
+          type: string
+          description: 'Location Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.'
+          example: ABC Corp Location
+        inquiryDate:
+          type: string
+          description: 'Inquiry date in the format yyyy-mm-dd'
+          example: 2019-07-02
+        inquiryType:
+          type: string
+          description: 'This field can be used to denote the type of report requested. This is an optional element for this report and if provided it is just used for tracking.'
+          example: BGS-001
+        permPurpose:
+          type: string
+          description: "Represents the permissible purpose code Only the following values are allowed =['PPCHLDSPA','PPCREDIT','PPCRTORD','PPEMPLOY','PPGOVRNM','PPASSESS','PPBUSNSS','PPINSRNC','PPREVIEW','PPSECRTY','PPWRTTEN']"
+          example: PPCHLDSPA
+        trackingId:
+          type: string
+          description: 'This is an optional element for this report and if provided, it is just a passthrough.'
+          example: '9991110000'
+        sourceSystemId:
+          type: string
+          description: 'This is used to capture the id of the source system from which the request is coming (if provided). This is a pass-through used for tracking.'
+          example: string
+        sourceName:
+          type: string
+          description: 'This is used to capture the source system from which the request is coming (if provided). This is a pass-through and is just used for tracking.'
+          example: string
+        requestor:
+          $ref: '#/components/schemas/Requestor'
+          description: 'Container to hold  requestor details such as name, organization, email, address, phone numbers.'
+    Requestor:
+      type: object
+      description: 'Container to hold requestor details such as name, organization, email, address, phone numbers. The value if received in request will be echoed back in the response.'
+      properties:
+        name:
+          type: string
+          description: 'Requestor name.'
+          example: John Doe
+        endUser:
+          type: string
+          description: 'Requestor organization.'
+          example: ABC Company
+        email:
+          type: string
+          description: 'Requestor email.'
+          example: john.doe@abccompany.com
+        address:
+          type: string
+          description: 'Requestor address.'
+          example: 111 ABC Road, St. Louis, MO 63146
+        phoneNumbers:
+          type: array
+          description: "Details of requestor's phone numbers."
+          items:
+            $ref: '#/components/schemas/PhoneNumbers'
+    PhoneNumbers:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: 'Requestor phone identifier. The only value supported currently is "primary".'
+          example: primary
+        number:
+          type: string
+          description: 'Requestor phone number.'
+          example: 314-555-5555
+    PrimaryConsumer:
+      type: object
+      description: 'Container section to hold details of the Primary Consumer.'
+      required:
+        - personalInformation
+      properties:
+        personalInformation:
+          $ref: '#/components/schemas/PersonalInformation'
+    PersonalInformation:
+      type: object
+      description: "Container to hold Personal Information of the Primary Consumer."
+      required:
+        - socialSecurityNumber
+      properties:
+        socialSecurityNumber:
+          type: string
+          description: "Applicant's Social Security Number."
+          example: '666314889'
+        customerReferenceIdentifier :
+          type :  string
+          description: "Customer's reference identifier."
+          example: '1519'
+        dateOfBirth :
+          type :  string
+          description: "Applicant's date of birth in the format yyyy-mm-dd."
+          example: '1998-04-11'
+        name:
+          type: array
+          title: "Applicant's name"
+          items:
+            $ref : '#/components/schemas/Name'
+    Name:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: "Applicant's identifier. The only option currently supported is \"current\"."
+          example: current
+        firstName:
+          type: string
+          description: "Applicant's first name."
+          example: "Test"
+        lastName:
+          type: string
+          description: "Applicant's last name."
+          example: "Applicant"
+        middleName:
+          type: string
+          description: "Applicant's middle name."
+          example: "K"
+        suffix:
+          type: string
+          description: "Applicant's suffix."
+          example: "Jr."
+    Response:
+      type: object
+      properties:
+        transactionId :
+          type : string
+          description: 'Equifax generated report ID.'
+          example: 123456789
+        orderInfo:
+          $ref: '#/components/schemas/OrderInfoResponse'
+        twnIdentity:
+          $ref: '#/components/schemas/twnIdentity'
+        errorInfo:
+          $ref: '#/components/schemas/errorInfo'
+    OrderInfoResponse:
+      type: object
+      description: 'Container to hold  order information along with primary consumer details.'
+      properties:
+        inquiryDate:
+          type: string
+          description: 'Inquiry date in the format yyyy-mm-dd.'
+          example: 2018-04-11
+        inquiryType:
+          type: string
+          description: 'Inquiry type identifier.'
+          example: BGS-001
+        permPurpose:
+          type: string
+          description: "Represents the permissible purpose code Only the following values are allowed =['PPCHLDSPA','PPCREDIT','PPCRTORD','PPEMPLOY','PPGOVRNM','PPASSESS','PPBUSNSS','PPINSRNC','PPREVIEW','PPSECRTY','PPWRTTEN']"
+          example: PPCHLDSPA
+        trackingId:
+          type: string
+          description: 'Tracking id is a customer provided reference number. The value if received in request will be echoed back in the response.'
+          example: 9991110000
+        sourceSystemId:
+          type: string
+          description: 'Source system id is a customer provided system id. The value if received in request will be echoed back in the response.'
+          example: string
+        sourceName:
+          type: string
+          description: 'Source name is a customer provided system name. The value if received in request will be echoed back in the response.'
+          example: string
+        inquirySsn:
+          type: string
+          description: 'Social Security Number sourced from the Employment record.'
+          example: 992880001
+        requestor:
+          $ref: '#/components/schemas/Requestor'
+    twnIdentity:
+      type: object
+      description: 'Container to hold Identity Match details returned by the Employment datasource (The Work Number&reg;).'
+      properties:
+        status:
+          type: string
+          description: 'Status of Identity Match request.'
+          enum:
+            - Completed
+            - Unable To Complete
+          example: Completed
+        code:
+          type: string
+          description: 'The Work Number&reg; ID Code.'
+          enum:
+            - Y (Indicates a Match)
+            - N (Indicates a No Match)
+            - X (Indicates a No Hit)
+            - E (Indicates an Error)
+          example: Y
+        description:
+          type: string
+          description: 'The Work Number&reg; ID Description.'
+          enum:
+            - Match
+            - No Match
+            - No Hit
+            - Error
+          example: Match
+        disclaimer:
+          type: string
+          description: 'This is an Equifax Disclaimer statement for the Report.'
+          example: "NOTE: Information contained in The Work Number ID is consumer report information obtained from The Work Number. It can be used for the FCRA permissible purpose for which this consumer report was obtained, and the user must adhere to FCRA requirements, including but not limited to the relevant requirements contained in the CFPB's notice to users of consumer reports."
+    errorInfo:
+      type: object
+      description: 'This section could possibly be returned if there are errors returned by Employment Datasource. Applicable in case of errors in work number.'
+      properties:
+        errorCode:
+          type: number
+          description: 'The  error codes returned by Employment datasource are returned as-is from the client.'
+          example: 2000
+        errorMessage:
+          type: string
+          description: 'Error description.for errors returned by the Employment datasource. Some of these could provide additional details into the cause of the error. Internal consumers of client application (CSF) use some of these error codes to request additional information to correct the situation. For direct integrations, these are just informational.'
+          example: "No data and no error code. OFX server logic error."
+  examples:
+    '400.01':
+      value:
+        efxErrorCode: '400.01'
+        description: Invalid JSON payload.
+       
+    '401.03':
+      value:
+        efxErrorCode: '401.03'
+        description: Invalid mandatory parameters.
+        
+    '403.01':
+      value:
+        efxErrorCode: '403.01'
+        description: Access Denied.
+       
+    '404.01':
+      value:
+        efxErrorCode: '404.01'
+        description: The specified resource does not exist.
+       
+    '415.01':
+      value:
+        efxErrorCode: '415.01'
+        description: Payload Format is in an Unsupported Format.
+       
+    '422.01':
+      value:
+        efxErrorCode: '422.01'
+        description: Unprocessable Entity.
+       
+    '429.01':
+      value:
+        efxErrorCode: '429.01'
+        description: Exceeded the maximum number of requests within a specified time frame.
+        
+    '500.01':
+      value:
+        efxErrorCode: '500.01'
+        description: An internal error has occurred.
+        additionalErrorDetails: {}
+    '501.01':
+      value:
+        efxErrorCode: '501.01'
+        description: Not-implemented - Specified resource is not implemented.
+       
+    '503.01':
+      value:
+        efxErrorCode: '503.01'
+        description: Service is un-available.
+        additionalErrorDetails: {}
+    '504.01':
+      value:
+        efxErrorCode: '504.01'
+        description: Gateway timeout.
+        additionalErrorDetails: {}        
+
+paths:
+  /identity-verifications:
+    post:
+      tags:
+        - Identity verification
+      description:
+        The Work Number&reg; ID verifies that the applicant-provided Name and SSN match. This service requires an OAuth access token that can be obtained by first making the OAuth 2.0 Access Token call.
+      operationId: Verify applicant's identity
+      security:
+        - OAuth 2.0: ["scopes: https://api.equifax.com/business/verifications/twn/v1/identity-verifications:r"]
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '400.01':
+                  $ref: '#/components/examples/400.01'
+        "401":
+          description: UnAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '401.03':
+                  $ref: '#/components/examples/401.03'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '404.01':
+                  $ref: '#/components/examples/404.01'
+        "415":
+          description: Payload is in an unsupported format.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '415.01':
+                  $ref: '#/components/examples/415.01'
+
+        "429":
+          description: Exceeded the maximum number of requests within a specified time frame.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '429.01':
+                  $ref: '#/components/examples/429.01'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '500.01':
+                  $ref: '#/components/examples/500.01'
+        "501":
+          description: Not-implemented - Specified resource is not implemented.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '501.01':
+                  $ref: '#/components/examples/501.01'
+        "503":
+          description: Service UnAvailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '503.01':
+                  $ref: '#/components/examples/503.01'
+        "504":
+          description: Gateway Timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                '504.01':
+                  $ref: '#/components/examples/504.01'

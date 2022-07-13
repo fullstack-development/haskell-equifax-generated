@@ -17,16 +17,19 @@ import qualified Prelude as P
 data AuthTokenScope
   = Scope'PrescreenOfOne -- "https://api.equifax.com/business/prescreen-of-one/v1"
   | Scope'ConsumerCreditReport -- https://api.equifax.com/business/consumer-credit/v1
+  | Scope'IdentityVerification -- "https://api.equifax.com/business/verifications/twn/v1/identity-verifications:r"
   deriving (P.Eq, P.Show, P.Read)
 
 scopeToUrl :: AuthTokenScope -> T.Text
 scopeToUrl Scope'PrescreenOfOne = "https://api.equifax.com/business/prescreen-of-one/v1"
 scopeToUrl Scope'ConsumerCreditReport = "https://api.equifax.com/business/consumer-credit/v1"
+scopeToUrl Scope'IdentityVerification = "https://api.equifax.com/business/verifications/twn/v1/identity-verifications:r"
 
 instance A.FromJSON AuthTokenScope where
   parseJSON = A.withText "OAuthTokenScope" \case
     "https://api.equifax.com/business/prescreen-of-one/v1" -> pure Scope'PrescreenOfOne
     "https://api.equifax.com/business/consumer-credit/v1" -> pure Scope'ConsumerCreditReport
+    "https://api.equifax.com/business/verifications/twn/v1/identity-verifications:r" -> pure Scope'IdentityVerification
     unknown -> A.prependFailure "Unknwon scope" (A.unexpected (A.String unknown))
 
 instance A.ToJSON AuthTokenScope where

@@ -200,6 +200,8 @@ class MimeType mtype => MimeUnrender mtype o where
 -- | @A.eitherDecode@
 instance A.FromJSON a => MimeUnrender MimeJSON a where mimeUnrender _ = A.eitherDecode
 
+instance A.FromJSON a => MimeUnrender MimeAny a where mimeUnrender _ = A.eitherDecode
+
 -- | @P.left T.unpack . WH.urlDecodeAsForm@
 instance WH.FromForm a => MimeUnrender MimeFormUrlEncoded a where mimeUnrender _ = P.left T.unpack . WH.urlDecodeAsForm
 

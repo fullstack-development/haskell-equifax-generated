@@ -68,12 +68,17 @@ import qualified Prelude as P
 -- 
 verifyApplicantsIdentity
   :: (Consumes VerifyApplicantsIdentity MimeJSON, MimeRender MimeJSON IdentityVerificationRequest)
-  => IdentityVerificationRequest -- ^ "request"
+  => IdentityVerificationHeaders -- ^ 'headers'
+  -> IdentityVerificationRequest -- ^ "request"
   -> TheEquifaxRequest VerifyApplicantsIdentity MimeJSON IdentityVerificationResponse MimeAny -- MimeAny here because otherwise the request fails
-verifyApplicantsIdentity request =
+verifyApplicantsIdentity headers request =
   _mkRequest "POST" ["/business/verifications/twn/v1/identity-verifications"]
     `_hasAuthType` (P.Proxy :: P.Proxy AuthEquaifaxOAuth20Token)
     `setBodyParam` request
+    `setHeader` [userIdHeader, userPinHeader]
+  where 
+    userIdHeader = ("user_id", T.encodeUtf8 $ userId headers )
+    userPinHeader = ("user_pin", T.encodeUtf8 $ userPin headers )
 
 data VerifyApplicantsIdentity 
 instance HasBodyParam VerifyApplicantsIdentity IdentityVerificationRequest 

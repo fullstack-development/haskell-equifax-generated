@@ -463,6 +463,12 @@ mkPrimaryConsumer primaryConsumerPersonalInformation =
   { primaryConsumerPersonalInformation
   }
 
+data IdentityVerificationHeaders = IdentityVerificationHeaders
+  {
+    userId :: Text,
+    userPin :: Text
+  }
+
 -- ** IdentityVerificationRequest
 -- | IdentityVerificationRequest
 data IdentityVerificationRequest = IdentityVerificationRequest

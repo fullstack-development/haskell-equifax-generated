@@ -79,7 +79,8 @@ library
       TheEquifax.WorkNumberID.Model
 
       TheEquifax.AuthToken.Model
-      TheEquifax.AuthToken.API.Token
+      TheEquifax.AuthToken.V1.API.Token
+      TheEquifax.AuthToken.V2.API.Token
       TheEquifax.Core
       TheEquifax.Core.Auth
       TheEquifax.Core.Client

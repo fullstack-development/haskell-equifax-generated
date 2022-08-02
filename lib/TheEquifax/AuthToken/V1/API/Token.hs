@@ -8,7 +8,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module TheEquifax.AuthToken.API.Token where
+module TheEquifax.AuthToken.V1.API.Token where
 
 import Data.Aeson ((.=))
 import qualified Data.Aeson as A
@@ -17,7 +17,7 @@ import qualified Data.Proxy as P (Proxy (..))
 import qualified Data.Text as T
 import TheEquifax.AuthToken.Model (AuthTokenResponse, AuthTokenScope, scopeToUrl)
 import TheEquifax.Core as Core
-import TheEquifax.Core.Auth (AuthBasicOAuth20)
+import TheEquifax.Core.Auth (AuthEquifaxForm)
 import TheEquifax.Core.MimeTypes
 import Web.FormUrlEncoded (ToForm)
 import Web.Internal.FormUrlEncoded (ToForm (toForm))
@@ -44,16 +44,13 @@ mkAuthTokenInput scope = AuthTokenInput {grantType = "client_credentials", scope
 
 -- *** requestAithToken
 
--- | @POST \/report-requests@
---
--- AuthMethod: 'AuthBasicOAuth20'
 requestAuthToken ::
   (Consumes GenerateAccessToken MimeFormUrlEncoded) =>
   AuthTokenScope ->
   TheEquifaxRequest GenerateAccessToken MimeFormUrlEncoded AuthTokenResponse MimeJSON
 requestAuthToken scope =
-  _mkRequest "POST" ["/v2/oauth/token"]
-    `_hasAuthType` (P.Proxy :: P.Proxy AuthBasicOAuth20)
+  _mkRequest "POST" ["/v1/oauth/token"]
+    `_hasAuthType` (P.Proxy :: P.Proxy AuthEquifaxForm)
     `setBodyParam` mkAuthTokenInput scope
 
 data GenerateAccessToken

@@ -13,6 +13,8 @@ import qualified Lens.Micro as L
 import TheEquifax.Core
 import Prelude (Applicative, Bool (..), Char, Double, FilePath, Float, Functor, Int, Integer, Maybe (..), Monad, String, fmap, maybe, mempty, pure, undefined, ($), (.), (/=), (<$>), (<*>), (=<<), (>>=))
 import qualified Prelude as P
+import qualified TheEquifax.Core as Core
+import qualified Data.Text as T
 
 -- * Auth Methods
 
@@ -51,3 +53,18 @@ instance AuthMethod AuthEquaifaxOAuth20Token where
         else req
     where
       cred = BC.append "Bearer " token
+
+data AuthEquifaxForm
+  = -- | username password
+    AuthEquifaxForm T.Text T.Text
+  deriving (P.Eq, P.Show, P.Typeable)
+
+instance AuthMethod AuthEquifaxForm where
+  applyAuthMethod _ a@(AuthEquifaxForm clientId clientSecret) req =
+    P.pure $
+      if (P.typeOf a `P.elem` rAuthTypes req)
+        then
+          req `addForm` Core.toForm ("client_id", clientId)
+              `addForm` Core.toForm ("client_secret", clientSecret)
+              & L.over rAuthTypesL (P.filter (/= P.typeOf a))
+        else req

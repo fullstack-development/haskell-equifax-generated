@@ -220,13 +220,13 @@ mkName =
 -- | OrderInfo
 -- Container to hold order information such as requestor, inquiry date, inquiry type, source details, etc.
 data OrderInfo = OrderInfo
-  { orderInfoOrganizationId :: !(Double) -- ^ /Required/ "organizationId" - Customer Organization ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
-  , orderInfoLocationId :: !(Double) -- ^ /Required/ "locationId" - Customer Location ID is the department or product line the Customer is configured for in the Equifax system. This will be generated as part of customer onboarding on the Equifax side.
-  , orderInfoOrganizationName :: !(Text) -- ^ /Required/ "organizationName" - Customer Organization Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
+  { orderInfoOrganizationId :: !(Maybe Double) -- ^ /Required/ "organizationId" - Customer Organization ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
+  , orderInfoLocationId :: !(Maybe Double) -- ^ /Required/ "locationId" - Customer Location ID is the department or product line the Customer is configured for in the Equifax system. This will be generated as part of customer onboarding on the Equifax side.
+  , orderInfoOrganizationName :: !(Maybe Text) -- ^ /Required/ "organizationName" - Customer Organization Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
   , orderInfoPlatformName :: !(Maybe Text) -- ^ "platformName" - This will be the name of the Application being used to place the order.This is an optional element
   , orderInfoIntermediaryName :: !(Maybe Text) -- ^ "intermediaryName" - This will be the company name/connector name. This is an optional element
   , orderInfoResellerName :: !(Maybe Text) -- ^ "resellerName" - Reseller name
-  , orderInfoLocationName :: !(Text) -- ^ /Required/ "locationName" - Location Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
+  , orderInfoLocationName :: !(Maybe Text) -- ^ /Required/ "locationName" - Location Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
   , orderInfoInquiryDate :: !(Maybe Text) -- ^ "inquiryDate" - Inquiry date in the format yyyy-mm-dd
   , orderInfoInquiryType :: !(Maybe Text) -- ^ "inquiryType" - This field can be used to denote the type of report requested. This is an optional element for this report and if provided it is just used for tracking.
   , orderInfoPermPurpose :: !(Text) -- ^ /Required/ "permPurpose" - Represents the permissible purpose code Only the following values are allowed &#x3D;[&#39;PPCHLDSPA&#39;,&#39;PPCREDIT&#39;,&#39;PPCRTORD&#39;,&#39;PPEMPLOY&#39;,&#39;PPGOVRNM&#39;,&#39;PPASSESS&#39;,&#39;PPBUSNSS&#39;,&#39;PPINSRNC&#39;,&#39;PPREVIEW&#39;,&#39;PPSECRTY&#39;,&#39;PPWRTTEN&#39;]
@@ -278,21 +278,17 @@ instance A.ToJSON OrderInfo where
 
 -- | Construct a value of type 'OrderInfo' (by applying it's required fields, if any)
 mkOrderInfo
-  :: Double -- ^ 'orderInfoOrganizationId': Customer Organization ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
-  -> Double -- ^ 'orderInfoLocationId': Customer Location ID is the department or product line the Customer is configured for in the Equifax system. This will be generated as part of customer onboarding on the Equifax side.
-  -> Text -- ^ 'orderInfoOrganizationName': Customer Organization Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
-  -> Text -- ^ 'orderInfoLocationName': Location Name corresponding to the ID as supplied by Equifax. This will be generated as part of customer onboarding on the Equifax side.
-  -> Text -- ^ 'orderInfoPermPurpose': Represents the permissible purpose code Only the following values are allowed =['PPCHLDSPA','PPCREDIT','PPCRTORD','PPEMPLOY','PPGOVRNM','PPASSESS','PPBUSNSS','PPINSRNC','PPREVIEW','PPSECRTY','PPWRTTEN']
+  ::  Text -- ^ 'orderInfoPermPurpose': Represents the permissible purpose code Only the following values are allowed =['PPCHLDSPA','PPCREDIT','PPCRTORD','PPEMPLOY','PPGOVRNM','PPASSESS','PPBUSNSS','PPINSRNC','PPREVIEW','PPSECRTY','PPWRTTEN']
   -> OrderInfo
-mkOrderInfo orderInfoOrganizationId orderInfoLocationId orderInfoOrganizationName orderInfoLocationName orderInfoPermPurpose =
+mkOrderInfo orderInfoPermPurpose =
   OrderInfo
-  { orderInfoOrganizationId
-  , orderInfoLocationId
-  , orderInfoOrganizationName
+  { orderInfoOrganizationId = Nothing
+  , orderInfoLocationId = Nothing
+  , orderInfoOrganizationName = Nothing
   , orderInfoPlatformName = Nothing
   , orderInfoIntermediaryName = Nothing
   , orderInfoResellerName = Nothing
-  , orderInfoLocationName
+  , orderInfoLocationName = Nothing
   , orderInfoInquiryDate = Nothing
   , orderInfoInquiryType = Nothing
   , orderInfoPermPurpose

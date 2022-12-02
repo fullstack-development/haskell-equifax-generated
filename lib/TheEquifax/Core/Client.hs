@@ -21,6 +21,7 @@ Module : PrescreenOfOne.Client
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# OPTIONS_GHC -fno-warn-unused-binds -fno-warn-unused-imports #-}
+{-# LANGUAGE DeriveAnyClass #-}
 
 module TheEquifax.Core.Client where
 
@@ -49,6 +50,7 @@ import Data.Function ((&))
 import Data.Monoid ((<>))
 import Data.Text (Text)
 import GHC.Exts (IsString(..))
+import Control.Exception (Exception)
 
 -- * Dispatch
 
@@ -79,7 +81,7 @@ data MimeError =
   MimeError {
     mimeError :: String -- ^ unrender/parser error
   , mimeErrorResponse :: NH.Response BCL.ByteString -- ^ http response
-  } deriving (Show)
+  } deriving (Show, Exception)
 
 -- | send a request returning the 'MimeResult'
 dispatchMime

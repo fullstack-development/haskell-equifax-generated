@@ -206,7 +206,7 @@ instance A.FromJSON a => MimeUnrender MimeAny a where mimeUnrender _ = A.eitherD
 instance WH.FromForm a => MimeUnrender MimeFormUrlEncoded a where mimeUnrender _ = P.left T.unpack . WH.urlDecodeAsForm
 
 -- | @P.Right . P.id@
-instance MimeUnrender MimePlainText BL.ByteString where mimeUnrender _ = P.Right . P.id
+instance MimeUnrender MimePlainText BL.ByteString where mimeUnrender _ = P.Right
 
 -- | @P.left P.show . TL.decodeUtf8'@
 instance MimeUnrender MimePlainText T.Text where mimeUnrender _ = P.left P.show . T.decodeUtf8' . BL.toStrict
@@ -215,7 +215,7 @@ instance MimeUnrender MimePlainText T.Text where mimeUnrender _ = P.left P.show 
 instance MimeUnrender MimePlainText String where mimeUnrender _ = P.Right . BCL.unpack
 
 -- | @P.Right . P.id@
-instance MimeUnrender MimeOctetStream BL.ByteString where mimeUnrender _ = P.Right . P.id
+instance MimeUnrender MimeOctetStream BL.ByteString where mimeUnrender _ = P.Right
 
 -- | @P.left P.show . T.decodeUtf8' . BL.toStrict@
 instance MimeUnrender MimeOctetStream T.Text where mimeUnrender _ = P.left P.show . T.decodeUtf8' . BL.toStrict
@@ -236,5 +236,5 @@ data MimePdf = MimePdf deriving (P.Typeable)
 -- | @application/pdf@
 instance MimeType MimePdf where
   mimeType _ = Just $ P.fromString "application/pdf"
--- instance MimeRender MimePdf T.Text where mimeRender _ = undefined
--- instance MimeUnrender MimePdf T.Text where mimeUnrender _ = undefined
+
+instance MimeUnrender MimePdf BL.ByteString where mimeUnrender _ = P.Right

@@ -9,7 +9,7 @@
 -}
 
 {-|
-Module : ConsumerCreditReport.API.PDFFormattedReport
+Module : ConsumerCreditReport.API.ConsumerCreditReport
 -}
 
 {-# LANGUAGE FlexibleContexts #-}
@@ -19,11 +19,12 @@ Module : ConsumerCreditReport.API.PDFFormattedReport
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing -fno-warn-unused-binds -fno-warn-unused-imports #-}
 
-module ConsumerCreditReport.API.PDFFormattedReport where
+module TheEquifax.ConsumerCreditReport.API.ConsumerCreditReport where
 
-import ConsumerCreditReport.Core
-import ConsumerCreditReport.MimeTypes
-import ConsumerCreditReport.Model as M
+import TheEquifax.Core
+import TheEquifax.Core.MimeTypes
+import TheEquifax.ConsumerCreditReport.Model
+import TheEquifax.Models.CreditReportResponse
 
 import qualified Data.Aeson as A
 import qualified Data.ByteString as B
@@ -51,31 +52,35 @@ import GHC.Base ((<|>))
 
 import Prelude ((==),(/=),($), (.),(<$>),(<*>),(>>=),Maybe(..),Bool(..),Char,Double,FilePath,Float,Int,Integer,String,fmap,undefined,mempty,maybe,pure,Monad,Applicative,Functor)
 import qualified Prelude as P
+import TheEquifax.Core.Auth (AuthEquaifaxOAuth20Token(..))
+
 
 -- * Operations
 
 
--- ** PDFFormattedReport
+-- ** ConsumerCreditReport
 
--- *** reportsCreditReportPdfRequestIdGet
+-- *** requestConsumerCreditReport
 
--- | @GET \/reports\/credit-report\/{pdf-request-id}@
+-- | @POST \/reports\/credit-report@
 -- 
--- retrieve PDF referenced in 'links' from a previous POST response
+-- AuthMethod: 'AuthEquaifaxOAuth20Token'
 -- 
--- AuthMethod: 'AuthBasicOAuth20'
--- 
-reportsCreditReportPdfRequestIdGet 
-  :: Accept accept -- ^ request accept ('MimeType')
-  -> PdfRequestId -- ^ "pdfRequestId"
-  -> ConsumerCreditReportRequest ReportsCreditReportPdfRequestIdGet MimeNoContent FilePath accept
-reportsCreditReportPdfRequestIdGet  _ (PdfRequestId pdfRequestId) =
-  _mkRequest "GET" ["/reports/credit-report/",toPath pdfRequestId]
-    `_hasAuthType` (P.Proxy :: P.Proxy AuthBasicOAuth20)
+requestConsumerCreditReport 
+  :: (Consumes RequestConsumerCreditReport MimeJSON, MimeRender MimeJSON CreditReportRequest)
+  => CreditReportRequest -- ^ "creditReportRequest"
+  -> TheEquifaxRequest RequestConsumerCreditReport MimeJSON CreditReportResponse MimeJSON
+requestConsumerCreditReport creditReportRequest =
+  _mkRequest "POST" ["/business/consumer-credit/v1/reports/credit-report"]
+    `_hasAuthType` (P.Proxy :: P.Proxy AuthEquaifaxOAuth20Token)
+    `setBodyParam` creditReportRequest
 
-data ReportsCreditReportPdfRequestIdGet  
--- | @application/pdf@
-instance Produces ReportsCreditReportPdfRequestIdGet MimePdf
+data RequestConsumerCreditReport 
+instance HasBodyParam RequestConsumerCreditReport CreditReportRequest 
+
 -- | @application/json@
-instance Produces ReportsCreditReportPdfRequestIdGet MimeJSON
+instance Consumes RequestConsumerCreditReport MimeJSON
+
+-- | @application/json@
+instance Produces RequestConsumerCreditReport MimeJSON
 

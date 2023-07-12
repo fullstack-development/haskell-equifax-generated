@@ -18,7 +18,7 @@ Module : ConsumerCreditReport.Lens
 {-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing -fno-warn-unused-matches -fno-warn-unused-binds -fno-warn-unused-imports #-}
 
-module ConsumerCreditReport.ModelLens where
+module TheEquifax.ConsumerCreditReport.ModelLens where
 
 import qualified Data.Aeson as A
 import qualified Data.ByteString.Lazy as BL
@@ -32,8 +32,14 @@ import Data.Text (Text)
 import Prelude (($), (.),(<$>),(<*>),(=<<),Maybe(..),Bool(..),Char,Double,FilePath,Float,Int,Integer,String,fmap,undefined,mempty,maybe,pure,Monad,Applicative,Functor)
 import qualified Prelude as P
 
-import ConsumerCreditReport.Model
-import ConsumerCreditReport.Core
+import TheEquifax.ConsumerCreditReport.Model
+import TheEquifax.Models.Address
+import TheEquifax.Models.Trade
+import TheEquifax.Models.CreditReportResponse
+import TheEquifax.Models.ConsumerCreditReportEquifaxUSConsumerCreditReport
+import TheEquifax.Models.CreditorClassificationCode
+import TheEquifax.Core
+
 
 
 -- * APIErrorResponse
@@ -155,9 +161,9 @@ addressRentOwnBuyL f Address{..} = (\addressRentOwnBuy -> Address { addressRentO
 {-# INLINE addressRentOwnBuyL #-}
 
 -- | 'addressSourceOfAddress' Lens
-addressSourceOfAddressL :: Lens_' Address (Maybe AddressSourceOfAddress)
-addressSourceOfAddressL f Address{..} = (\addressSourceOfAddress -> Address { addressSourceOfAddress, ..} ) <$> f addressSourceOfAddress
-{-# INLINE addressSourceOfAddressL #-}
+-- addressSourceOfAddressL :: Lens_' Address (Maybe AddressSourceOfAddress)
+-- addressSourceOfAddressL f Address{..} = (\addressSourceOfAddress -> Address { addressSourceOfAddress, ..} ) <$> f addressSourceOfAddress
+-- {-# INLINE addressSourceOfAddressL #-}
 
 -- | 'addressTelephoneNumber' Lens
 addressTelephoneNumberL :: Lens_' Address (Maybe Text)

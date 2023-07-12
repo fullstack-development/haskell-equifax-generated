@@ -52,6 +52,7 @@ import GHC.Base ((<|>))
 
 import Prelude ((==),(/=),($), (.),(<$>),(<*>),(>>=),Maybe(..),Bool(..),Char,Double,FilePath,Float,Int,Integer,String,fmap,undefined,mempty,maybe,pure,Monad,Applicative,Functor)
 import qualified Prelude as P
+import TheEquifax.Core.Auth (AuthEquaifaxOAuth20Token(..))
 
 
 -- * Operations
@@ -63,7 +64,7 @@ import qualified Prelude as P
 
 -- | @POST \/reports\/credit-report@
 -- 
--- AuthMethod: 'AuthBasicOAuth20'
+-- AuthMethod: 'AuthEquaifaxOAuth20Token'
 -- 
 requestConsumerCreditReport 
   :: (Consumes RequestConsumerCreditReport MimeJSON, MimeRender MimeJSON CreditReportRequest)
@@ -71,7 +72,7 @@ requestConsumerCreditReport
   -> TheEquifaxRequest RequestConsumerCreditReport MimeJSON CreditReportResponse MimeJSON
 requestConsumerCreditReport creditReportRequest =
   _mkRequest "POST" ["/business/consumer-credit/v1/reports/credit-report"]
-    `_hasAuthType` (P.Proxy :: P.Proxy AuthBasicOAuth20)
+    `_hasAuthType` (P.Proxy :: P.Proxy AuthEquaifaxOAuth20Token)
     `setBodyParam` creditReportRequest
 
 data RequestConsumerCreditReport 

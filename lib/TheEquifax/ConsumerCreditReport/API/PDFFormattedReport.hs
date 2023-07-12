@@ -17,6 +17,7 @@ Module : ConsumerCreditReport.API.PDFFormattedReport
 {-# LANGUAGE MonoLocalBinds #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing -fno-warn-unused-binds -fno-warn-unused-imports #-}
 
 module TheEquifax.ConsumerCreditReport.API.PDFFormattedReport where
@@ -51,6 +52,9 @@ import GHC.Base ((<|>))
 
 import Prelude ((==),(/=),($), (.),(<$>),(<*>),(>>=),Maybe(..),Bool(..),Char,Double,FilePath,Float,Int,Integer,String,fmap,undefined,mempty,maybe,pure,Monad,Applicative,Functor)
 import qualified Prelude as P
+import TheEquifax.Core.Client (MimeResult)
+import Data.Either (Either)
+import TheEquifax.Core.Auth (AuthEquaifaxOAuth20Token(..))
 
 -- * Operations
 
@@ -63,7 +67,7 @@ import qualified Prelude as P
 -- 
 -- retrieve PDF referenced in 'links' from a previous POST response
 -- 
--- AuthMethod: 'AuthBasicOAuth20'
+-- AuthMethod: 'AuthEquaifaxOAuth20Token'
 -- 
 reportsCreditReportPdfRequestIdGet 
   :: Accept accept -- ^ request accept ('MimeType')
@@ -71,7 +75,7 @@ reportsCreditReportPdfRequestIdGet
   -> TheEquifaxRequest ReportsCreditReportPdfRequestIdGet MimeNoContent FilePath accept
 reportsCreditReportPdfRequestIdGet  _ (PdfRequestId pdfRequestId) =
   _mkRequest "GET" ["/business/consumer-credit/v1/reports/credit-report/",toPath pdfRequestId]
-    `_hasAuthType` (P.Proxy :: P.Proxy AuthBasicOAuth20)
+    `_hasAuthType` (P.Proxy :: P.Proxy AuthEquaifaxOAuth20Token)
 
 data ReportsCreditReportPdfRequestIdGet  
 -- | @application/pdf@
@@ -79,3 +83,10 @@ instance Produces ReportsCreditReportPdfRequestIdGet MimePdf
 -- | @application/json@
 instance Produces ReportsCreditReportPdfRequestIdGet MimeJSON
 
+consumerReportPDF ::
+  PdfRequestId ->
+  TheEquifaxRequest ReportsCreditReportPdfRequestIdGet MimeNoContent BL.ByteString MimePdf 
+consumerReportPDF (PdfRequestId pdfRequestId) =
+  _mkRequest "GET" ["/business/consumer-credit/v1/reports/credit-report/", toPath pdfRequestId]
+    `_hasAuthType` (P.Proxy @AuthEquaifaxOAuth20Token)
+ 

@@ -193,7 +193,7 @@ instance A.ToJSON ConsumerCreditReportEquifaxUSConsumerCreditReport where
         "doNotCombineIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportDoNotCombineIndicator,
         "addressDiscrepancyIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportAddressDiscrepancyIndicator,
         "fraudSocialNumAlertCode" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudSocialNumAlertCode,
-        "fraudIDScanAlertCode" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudIDScanAlertCode,
+        "fraudIDScanAlertCodes" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudIDScanAlertCode,
         "fraudVictimIndicator" .= consumerCreditReportEquifaxUSConsumerCreditReportFraudVictimIndicator,
         "addresses" .= consumerCreditReportEquifaxUSConsumerCreditReportAddresses,
         "identityScan" .= consumerCreditReportEquifaxUSConsumerCreditReportIdentityScan,

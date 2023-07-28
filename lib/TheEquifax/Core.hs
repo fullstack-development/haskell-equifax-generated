@@ -511,7 +511,7 @@ _readDate s = Date <$> ( TI.parseTimeM True TI.defaultTimeLocale "%Y-%m-%d" s
                          <|>  TI.parseTimeM True TI.defaultTimeLocale "%m00%Y" s)
 {-# INLINE _readDate #-}
 
--- | @TI.formatTime TI.defaultTimeLocale "%Y-%m-%d"@
+-- | @TI.formatTime TI.defaultTimeLocale "%m%d%Y"@
 _showDate :: TI.FormatTime t => t -> String
 _showDate =
   TI.formatTime TI.defaultTimeLocale "%m%d%Y"
